@@ -25,5 +25,87 @@ struct transaction {
 };
 
 struct transaction * sortedArraysCommonElements(struct transaction *A, int ALen, struct transaction *B, int BLen) {
-	return NULL;
+	
+	if ((A == NULL) || (B == NULL))return NULL;
+
+	int i = 0, j = 0,res_index=0;
+
+	struct transaction *res;
+
+	if (ALen<BLen)
+	 res = (struct transaction*)malloc(sizeof(struct transaction)*ALen);
+	else
+	{
+		res = (struct transaction*)malloc(sizeof(struct transaction)*BLen);
+
+	}
+	
+
+	int input1_date, input1_month, input1_year, input2_date, input2_month, input2_year;
+
+	while ((i < ALen) && (j < BLen))
+	{
+		input1_date = A[i].date[1] - '0' + (A[i].date[0] - '0') * 10;
+		input1_month = A[i].date[4] - '0' + (A[i].date[3] - '0')*10;
+		input1_year = (A[i].date[6] - '0') * 1000 + (A[i].date[7] - '0') * 100 + (A[i].date[8] - '0') * 10 + (A[i].date[9] - '0');
+
+		input2_date = B[j].date[1] - '0' + (B[j].date[0] - '0') * 10;
+		input2_month = B[j].date[4] - '0' + (B[i].date[3] - '0')*10;
+		input2_year = (B[j].date[6] - '0') * 1000 + (B[j].date[7] - '0') * 100 + (B[j].date[8] - '0') * 10 + (B[j].date[9] - '0');
+
+		if ((input1_date == input2_date) && (input1_month == input2_month) && (input1_year == input2_year))
+		{
+			res[res_index] = A[i];
+			res_index++;
+			i++;
+			j++;
+		}
+		if (input1_year < input2_year)
+		{
+			i++;
+		}
+		else
+		{
+			if (input2_year > input1_year)
+			{
+				j++;
+			}
+			else
+			{
+				if (input1_month > input2_month)
+				{
+					i++;
+				}
+				else
+				{
+					if (input2_month > input1_month)
+					{
+						j++;
+					}
+					else
+					{
+						if (input1_date > input2_date)
+						{
+							i++;
+						}
+						else
+						{
+							if (input2_date > input1_date)
+							{
+								j++;
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+	}
+
+	if (res_index == 0)
+		return 0;
+	return res;
+
+
 }
